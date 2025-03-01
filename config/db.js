@@ -1,23 +1,20 @@
-require('dotenv').config();
+const mongoose = require("mongoose");
+require("dotenv").config();
 
-const mongoose = require('mongoose');
+const connectDB = async () => {
+    try {
+        const uri = process.env.MONGO_CONNECTION_URL;
+        if (!uri) {
+            throw new Error("MongoDB URI is missing. Check your .env file.");
+        }
 
-function connectDB() {
-    //Database Connection
-    mongoose.connect(process.env.MONGO_CONNECTION_URL, 
-        {
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true,
-            useFindAndModify: true  
-        }).catch((err)=>console.log('err', err))
-        const connection = mongoose.connection;
-        connection.once('open',()=>{
-            console.log('Database Connected')
-        }).catch(err => {
-            console.log('Database Connection failed')
-        })
+        await mongoose.connect(uri); // ✅ Remove deprecated options
 
-}
+        console.log("✅ MongoDB Connected Successfully!");
+    } catch (err) {
+        console.error("❌ Database Connection Failed:", err);
+        process.exit(1);
+    }
+};
 
-module.exports = connectDB
+module.exports = connectDB;
