@@ -12,7 +12,7 @@ router.get('/:uuid', async (req, res) => {
             return res.render('download',{ error: 'Link has been expired' })
         }else{
             return res.render('download', {
-                uuid: file.uudi,
+                uuid: file.uuid,
                 filename: file.filename,
                 fileSize : file.size,
                 downloadLink: `${process.env.APP_BASE_URL}/files/download/${file.uuid}`,
